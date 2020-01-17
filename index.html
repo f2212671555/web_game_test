@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <!-- jquery start -->
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+  </script>
+  <!-- jquery end -->
+  <!-- boostrap start -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
+  </script>
+  <!-- boostrap end -->
+  <!-- webgl extension start -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/109/three.min.js"></script>
+  <script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/stats.js/r16/Stats.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cannon.js/0.6.2/cannon.min.js"></script>
+  <script type="text/javascript" charset="UTF-8" src="/resourses/javascript/loader/GLTFLoader.js"></script>
+  <script type="text/javascript" charset="UTF-8" src="/resourses/javascript/controller/PointerLockControls.js"></script>
+  <!-- webgl extension end -->
+  <!-- my start -->
+  <script type="text/javascript" charset="UTF-8" src="/resourses/javascript/tools/tools.js"></script>
+  <script type="text/javascript" charset="UTF-8" src="/resourses/javascript/class/object.js"></script>
+  <script type="text/javascript" charset="UTF-8" src="/resourses/javascript/class/texture.js"></script>
+  <script type="text/javascript" charset="UTF-8" src="/resourses/javascript/class/character/Creeper.js"></script>
+  <!-- my end -->
+  <title>Gamedev Canvas Workshop</title>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+
+    canvas {
+      background: #eee;
+      display: block;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+
+<body>
+  <script id="2d-vertex-shader" type="x-shader/x-vertex">
+    attribute vec2 a_position;
+    attribute vec2 a_texCoord;
+
+    uniform vec2 u_resolution;
+
+    varying vec2 v_texCoord;
+
+    void main() {
+      // convert the rectangle from pixels to 0.0 to 1.0
+      vec2 zeroToOne = a_position / u_resolution;
+
+      // convert from 0->1 to 0->2
+      vec2 zeroToTwo = zeroToOne * 2.0;
+
+      // convert from 0->2 to -1->+1 (clipspace)
+      vec2 clipSpace = zeroToTwo - 1.0;
+
+      gl_Position = vec4(clipSpace * vec2(1, -1), 0, 1);
+
+      // pass the texCoord to the fragment shader
+      // The GPU will interpolate this value between points.
+      v_texCoord = a_texCoord;
+    }
+    </script>
+  <script id="2d-fragment-shader" type="x-shader/x-fragment">
+    precision mediump float;
+
+    // our texture
+    uniform sampler2D u_image;
+
+    // the texCoords passed in from the vertex shader.
+    varying vec2 v_texCoord;
+
+    void main() {
+    gl_FragColor = texture2D(u_image, v_texCoord);
+    }
+    </script>
+  <script id="drawImage-vertex-shader" type="x-shader/x-vertex">
+    attribute vec4 a_position;
+      attribute vec2 a_texcoord;
+
+      uniform mat4 u_matrix;
+
+      varying vec2 v_texcoord;
+
+      void main() {
+        gl_Position = u_matrix * a_position;
+        v_texcoord = a_texcoord;
+      }
+      </script>
+  <script id="drawImage-fragment-shader" type="x-shader/x-fragment">
+    precision mediump float;
+
+        varying vec2 v_texcoord;
+
+        uniform sampler2D u_texture;
+
+        void main() {
+          gl_FragColor = texture2D(u_texture, v_texcoord);
+        }
+        </script>
+  <div id="stats"></div>
+  <script>
+    if (typeof (Storage) !== "undefined") {} else {
+      alert("此瀏覽器不支援Web Storage");
+    }
+  </script>
+</body>
+<!-- other start -->
+<script type="text/javascript" charset="UTF-8" src="/resourses/lib/OBJLoader.js"></script>
+<script type="text/javascript" charset="UTF-8" src="/resourses/javascript/template/gl-matrix/gl-matrix.js"></script>
+<script type="text/javascript" charset="UTF-8" src="/resourses/javascript/utils/webgl-utils.js"></script>
+<script type="text/javascript" charset="UTF-8" src="/resourses/javascript/template/gl-matrix/m4.js"></script>
+<!-- other end -->
+<!-- my start -->
+<!-- <script type="text/javascript" charset="UTF-8" src="/resourses/javascript/init/init.js"></script> -->
+<!-- <script type="text/javascript" charset="UTF-8" src="/resourses/javascript/render/main.js"></script> -->
+<script type="text/javascript" charset="UTF-8" src="/resourses/javascript/render/render_.js"></script>
+<link rel="stylesheet" href="/index.css" />
+<!-- my end -->
+</html>
