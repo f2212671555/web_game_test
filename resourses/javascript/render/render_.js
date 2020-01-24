@@ -125,7 +125,7 @@ function initWorld() {
 }
 
 function initGLTF() {
-    gltfLoader.load('/resourses/gltf/untitled.gltf', function (gltf) {
+    gltfLoader.load('resourses/gltf/untitled.gltf', function (gltf) {
         // console.log(gltf);
         gltf.scene.position.set(5, 0, 2);
         // physicalEngine.add(g)
@@ -147,7 +147,7 @@ function creatGround() {
     groundBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), -Math.PI / 2)
     world.add(groundBody)
 
-    const groundTexture = textureLoader.load('/resourses/images/grasslight-big.jpg')
+    const groundTexture = textureLoader.load('resourses/images/grasslight-big.jpg')
     groundTexture.wrapS = groundTexture.wrapT = THREE.RepeatWrapping
     groundTexture.repeat.set(25, 25)
     groundTexture.anisotropy = 16
@@ -283,13 +283,13 @@ function createTower() {
         roughness: 0.9
     })
     towerBumpMat.map = textureLoader.load(
-        '/resourses/obj/tower/textures/Wood_Tower_Col.jpg'
+        'resourses/obj/tower/textures/Wood_Tower_Col.jpg'
     )
     // towerBumpMat.bumpMap = textureLoader.load(
     //   './obj/tower/textures/Wood_Tower_Nor.jpg'
     // )
     // towerBumpMat.bumpScale = 1
-    loader.load('/resourses/obj/tower/tower.obj', function (loadedMesh) {
+    loader.load('resourses/obj/tower/tower.obj', function (loadedMesh) {
         loadedMesh.children.forEach(function (child) {
             child.material = towerBumpMat
             child.geometry.computeFaceNormals()
