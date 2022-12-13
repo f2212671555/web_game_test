@@ -9,7 +9,7 @@
   "author": "BerSerKer",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "mime": "^2.4.4"
   }
 }
